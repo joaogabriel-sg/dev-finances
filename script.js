@@ -1,4 +1,32 @@
+const DarkMode = {
+  buttonDarkMode: document.querySelector('.change-mode'),
+  updateBodyClasses(classToAdd, classToRemove) {
+    document.documentElement.classList.add(classToAdd);
+    document.documentElement.classList.remove(classToRemove);
+  },
+  changeMode() {
+    if (document.documentElement.classList.contains('dark'))  {
+      this.updateBodyClasses('light', 'dark');
+      this.buttonDarkMode.src = './assets/moon.svg';
+    }
+    else {
+      this.updateBodyClasses('dark', 'light');
+      this.buttonDarkMode.src = './assets/sun.svg';
+    }
+  },
+  init() {
+    this.changeMode = this.changeMode.bind(this);
+    this.buttonDarkMode.addEventListener('click', this.changeMode);
+  }
+}
+
 const Modal = {
+  elements: {
+    form: document.querySelector('form'),
+    description: document.querySelector('input#description'),
+    amount: document.querySelector('input#amount'),
+    date: document.querySelector('input#date'),
+  },
   open() {
     document
       .querySelector('.modal-overlay')
@@ -9,9 +37,16 @@ const Modal = {
       .querySelector('.modal-overlay')
       .classList.remove('active');
   },
+  update() {
+    this.open();
+  },
 }
 
 const Storage = {
+  getByIndex(index) {
+    const transactions = this.get();
+    return transactions[index];
+  },
   get() {
     return JSON.parse(localStorage.getItem('dev.finances:transactions')) || [];
   },
@@ -26,9 +61,24 @@ const Transaction = {
     this.all.push(transaction);
     App.reload();
   },
+  addByIndex(transaction, index) {
+    this.all[index] = transaction;
+    App.reload();
+  },
   remove(index) {
     this.all.splice(index, 1);
     App.reload();
+  },
+  update(index) {
+    const { amount, date, description } = Storage.getByIndex(index);
+
+    const [day, month, year] = date.split('/');
+    
+    Modal.update();
+    Modal.elements.form.setAttribute('data-update', index);
+    Modal.elements.description.value = description;
+    Modal.elements.amount.value = (amount / 100).toFixed(2);
+    Modal.elements.date.value = `${year}-${month}-${day}`;
   },
   incomes() {
     return this.all.reduce((acc, { amount }) => {
@@ -66,6 +116,9 @@ const DOM = {
       <td class="date">${transaction.date}</td>
       <td>
         <img onclick="Transaction.remove(${(index)})" src="./assets/minus.svg" alt="Remover transação" ">
+      </td>
+      <td>
+        <img onclick="Transaction.update(${(index)})" src="./assets/update.svg" alt="Atualizar transação" ">
       </td>
     `;
 
@@ -143,9 +196,19 @@ const Form = {
   submit(e) {
     e.preventDefault();
     try {
+      const form = e.target;
+      const indexToUpdate = form.dataset.update;
+      
       this.validateFields();
       const transaction = this.formatValues();
-      Transaction.add(transaction);
+      
+      if (indexToUpdate !== '' && indexToUpdate !== undefined) {
+        Transaction.addByIndex(transaction, indexToUpdate);
+        form.removeAttribute('data-update');
+      } else {
+        Transaction.add(transaction);
+      }
+      
       this.clearFields();
       Modal.close();
     } catch (error) {
@@ -156,6 +219,7 @@ const Form = {
 
 const App = {
   init() {
+    DarkMode.init();
     Transaction.all.forEach(DOM.addTransaction);
     DOM.updateBalance();
     Storage.set(Transaction.all);

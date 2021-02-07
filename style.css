@@ -1,15 +1,29 @@
 /* GLOBAL ======================== */
 :root {
   --dark-blue: #363f5f;
-  --green: #49aa26;
   --light-green: #3dd705;
+  --dark-green: #2d4a22;
+  --green: #49aa26;
   --red: #e92929;
+  --light: #f0f2f5;
+  --white: #ffffff;
+}
+
+.dark {
+  --dark-blue: #ffffff;
+  --light-green: #46cc15;
+  --dark-green: #0f0f0f;
+  --green: #32920f;
+  --red: #e92929;
+  --light: #191919;
+  --white: #2d2d2d;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: background 0.3s, background-color 0.3s, color 0.15s;
 }
 
 html {
@@ -17,7 +31,7 @@ html {
 }
 
 body {
-  background: #f0f2f5;
+  background: var(--light);
   font-family: 'Poppins', Arial, Helvetica, sans-serif;
 }
 
@@ -46,6 +60,14 @@ h2 {
   color: var(--dark-blue);
 }
 
+/* DARK MODE ======================== */
+.change-mode {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  cursor: pointer;
+}
+
 /* LINKS & BUTTONS ======================== */
 a {
   text-decoration: none;
@@ -53,6 +75,7 @@ a {
 }
 
 a:hover {
+  transition: color 0.3s;
   color: var(--light-green);
 }
 
@@ -65,6 +88,7 @@ button {
   border-radius: 0.25rem;
   color: #ffffff;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 button:hover {
@@ -85,6 +109,7 @@ button:hover {
   border-radius: 0.25rem;
   color: var(--red);
   opacity: 0.6;
+  transition: opacity 0.3s;
 }
 
 .button.cancel:hover {
@@ -93,14 +118,14 @@ button:hover {
 
 /* HEADER ======================== */
 header {
-  background: #2d4a22;
+  background: var(--dark-green);
   padding: 2rem 0 10rem;
   text-align: center;
 }
 
 #logo {
   font-weight: 100;
-  color: #ffffff;
+  color: var(--white);
 }
 
 /* BALANCE ======================== */
@@ -110,12 +135,12 @@ header {
 
 #balance h2 {
   margin-top: 0;
-  color: #ffffff;
+  color: var(--white);
 }
 
 /* CARDS ======================== */
 .card {
-  background: #ffffff;
+  background: var(--white);
   padding: 1.5rem 2rem;
   border-radius: 0.25rem;
   margin-bottom: 2rem;
@@ -165,7 +190,7 @@ table tbody tr td:last-child {
 }
 
 table th {
-  background: #ffffff;
+  background: var(--white);
   padding: 1rem 2rem;
   text-align: left;
   font-weight: 400;
@@ -174,10 +199,11 @@ table th {
 
 table tbody tr {
   opacity: 0.7;
+  transition: opacity 0.3s;
 }
 
 table td {
-  background: #ffffff;
+  background: var(--white);
   padding: 1rem 2rem;
 }
 
@@ -194,7 +220,7 @@ td.income {
 }
 
 td.expense {
-  color: #e92929;
+  color: var(--red);
 }
 
 td img {
@@ -222,7 +248,7 @@ td img {
 }
 
 .modal {
-  background: #f0f2f5;
+  background: var(--light);
   padding: 2.4rem;
   position: relative;
   z-index: 1;
@@ -238,10 +264,15 @@ td img {
 }
 
 input {
+  background: var(--white);
   width: 100%;
   padding: 0.8rem;
   border: none;
   border-radius: 0.2rem;
+}
+
+.dark input {
+  color: #ffffff;
 }
 
 .input-group {
@@ -249,6 +280,7 @@ input {
 }
 
 .input-group .help {
+  color: var(--dark-blue);
   opacity: 0.4;
 }
 
