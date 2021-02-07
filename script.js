@@ -68,6 +68,7 @@ const Transaction = {
   remove(index) {
     this.all.splice(index, 1);
     App.reload();
+    Animations.tableDatas(0.1);
   },
   update(index) {
     const { amount, date, description } = Storage.getByIndex(index);
@@ -167,6 +168,56 @@ const Utils = {
   },
 }
 
+const Animations = {
+  table() {
+    const tableRows = document.querySelectorAll('thead tr, tbody tr');
+    let index = 0, delay = 0.3;
+
+    setTimeout(() => {
+      const tableAnimationInterval = setInterval(() => {
+        if (tableRows[index]) {
+          tableRows[index].style.animation = `animate-table ${delay}s`;
+          tableRows[index].style.opacity = 0.7;
+          delay += 0.3;
+          index++;
+          Animations.tableDatasMouseHover();
+        } else {
+          clearInterval(tableAnimationInterval);
+        }
+      }, 100);
+    }, 1000);
+  },
+  tableDatas(timeout = 1) {
+    const tableDataRows = document.querySelectorAll('tbody tr');
+    let index = 0, delay = 0.3;
+
+    setTimeout(() => {
+      const tableAnimationInterval = setInterval(() => {
+        if (tableDataRows[index]) {
+          tableDataRows[index].style.animation = `animate-table ${delay}s`;
+          tableDataRows[index].style.opacity = 0.7;
+          delay += 0.3;
+          index++;
+          Animations.tableDatasMouseHover();
+        } else {
+          clearInterval(tableAnimationInterval);
+        }
+      }, 100);
+    }, timeout * 1000);
+  },
+  tableDatasMouseHover() {
+    const tableDataRows = document.querySelectorAll('tbody tr');
+    tableDataRows.forEach((tableDataRow) => {
+      tableDataRow.addEventListener('mouseover', () => {
+        tableDataRow.style.opacity = 1;
+      });
+      tableDataRow.addEventListener('mouseleave', () => {
+        tableDataRow.style.opacity = 0.7;
+      });
+    });
+  },
+}
+
 const Form = {
   description: document.querySelector('input#description'),
   amount: document.querySelector('input#amount'),
@@ -217,6 +268,7 @@ const Form = {
       
       this.clearFields();
       Modal.close();
+      Animations.tableDatas(0.1);
     } catch (error) {
       alert(error.message);
     }
@@ -237,3 +289,4 @@ const App = {
 }
 
 App.init();
+Animations.table();

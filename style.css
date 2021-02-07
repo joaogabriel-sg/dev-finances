@@ -1,3 +1,47 @@
+/* ANIMATIONS ==================== */
+@keyframes cards-animation {
+  from {
+    transform: translateX(-5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0rem);
+    opacity: 1;
+  }
+}
+
+@keyframes change-mode-animation {
+  from {
+    opacity: 0;
+    top: 0;
+  }
+  to {
+    opacity: 1;
+    top: 1.5rem;
+  }
+}
+
+@keyframes to-left {
+  from {
+    opacity: 0;
+    transform: translateX(5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes animate-table {
+  from {
+    transform: translateY(3rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0rem);
+  }
+}
+
 /* GLOBAL ======================== */
 :root {
   --dark-blue: #363f5f;
@@ -25,7 +69,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: background 0.3s, background-color 0.3s, color 0.15s;
+  transition: background 0.3s, background-color 0.3s, color 0.15s, stroke 0.15s;
 }
 
 html {
@@ -65,9 +109,10 @@ h2 {
 /* DARK MODE ======================== */
 .change-mode {
   position: absolute;
-  top: 1.5rem;
+  top: 0;
   right: 2rem;
   cursor: pointer;
+  animation: change-mode-animation 1s forwards;
 }
 
 /* LINKS & BUTTONS ======================== */
@@ -100,6 +145,8 @@ button:hover {
 .button.new {
   display: inline-block;
   margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: to-left 1s forwards 0.6s;
 }
 
 .button.cancel {
@@ -126,8 +173,8 @@ header {
 }
 
 #logo {
-  font-weight: 100;
-  color: var(--white);
+  opacity: 0;
+  animation: to-left 1s forwards 0.2s;
 }
 
 /* BALANCE ======================== */
@@ -147,11 +194,21 @@ header {
   border-radius: 0.25rem;
   margin-bottom: 2rem;
   color: var(--dark-blue);
-  transition: transform 0.3s;
+  transform: translateX(-5rem);
+  opacity: 0;
+  transition: transform 0.3s, background 0.3s;
 }
 
-.card:hover {
-  transform: scale(1.05);
+.card:nth-of-type(1) {
+  animation: cards-animation 1s forwards 0.6s;
+}
+
+.card:nth-of-type(2) {
+  animation: cards-animation 1s forwards 0.3s;
+}
+
+.card:nth-of-type(3) {
+  animation: cards-animation 1s forwards 0s;
 }
 
 .card h3 {
@@ -185,6 +242,7 @@ header {
 #transaction {
   display: block;
   width: 100%;
+  overflow-y: hidden;
   overflow-x: auto;
 }
 
@@ -192,6 +250,11 @@ header {
   width: 100%;
   border-spacing: 0 0.5rem;
   color: #969cb3;
+}
+
+#data-table thead tr,
+#data-table tbody tr {
+  opacity: 0;
 }
 
 table thead tr th:first-child,
@@ -262,11 +325,16 @@ td img {
   visibility: visible; 
 }
 
+.modal-overlay.active .modal {
+  animation: to-left 1s forwards 0.1s;
+}
+
 .modal {
   background: var(--light);
   padding: 2.4rem;
   position: relative;
   z-index: 1;
+  opacity: 0;
 }
 
 /* FORM ======================== */
@@ -316,6 +384,24 @@ footer {
   text-align: center;
   color: var(--dark-blue);
   opacity: 0.6;
+}
+
+.links {
+  margin-top: 0.4rem;
+}
+
+.links a {
+  margin: 0 0.4rem;
+}
+
+.links a svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  stroke: var(--dark-blue);
+}
+
+.links a:hover svg {
+  stroke: var(--green);
 }
 
 /* RESPONSIVE ======================== */
