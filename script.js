@@ -125,17 +125,23 @@ const DOM = {
     return html;
   },
   updateBalance() {
-    document
-      .getElementById('incomeDisplay')
+    document.getElementById('incomeDisplay')
       .innerHTML = Utils.formatCurrency(Transaction.incomes());
 
-    document
-      .getElementById('expenseDisplay')
+    document.getElementById('expenseDisplay')
       .innerHTML = Utils.formatCurrency(Transaction.expenses());
+
+    const totalDisplay = document.getElementById('totalDisplay');
+    const cardTotal = totalDisplay.parentNode;
+    const totalBalance = Transaction.total();
     
-      document
-      .getElementById('totalDisplay')
-      .innerHTML = Utils.formatCurrency(Transaction.total());
+    cardTotal.classList.remove('positive');
+    cardTotal.classList.remove('negative');
+
+    if (totalBalance > 0) cardTotal.classList.add('positive');
+    else if (totalBalance < 0) cardTotal.classList.add('negative');
+    
+    totalDisplay.innerHTML = Utils.formatCurrency(totalBalance);
   },
   clearTransactions() {
     this.transactionsContainer.innerHTML = '';
