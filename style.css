@@ -32,6 +32,17 @@
   }
 }
 
+@keyframes to-right {
+  from {
+    opacity: 0;
+    transform: translateX(-5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @keyframes animate-table {
   from {
     transform: translateY(3rem);
@@ -126,6 +137,12 @@ a:hover {
   color: var(--light-green);
 }
 
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .button {
   cursor: pointer;
 }
@@ -159,16 +176,25 @@ button:hover {
   opacity: 1;
 }
 
-.button.new {
+.button.new,
+.button.export {
   display: inline-block;
   margin-bottom: 0.8rem;
   opacity: 0;
-  animation: to-left 1s forwards 0.6s;
   transition: color 0.3s;
   color: var(--green);
 }
 
-.button.new:hover {
+.button.new {
+  animation: to-left 1s forwards 0.6s;
+}
+
+.button.export {
+  animation: to-right 1s forwards 0.6s;
+}
+
+.button.new:hover,
+.button.export:hover {
   color: var(--light-green);
 }
 

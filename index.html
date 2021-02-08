@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>dev.finance$</title>
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
@@ -43,13 +44,16 @@
 
     <section id="transaction">
       <h2 class="sr-only">Transações</h2>
-      <div class="button new" onclick="Modal.open()">+ Nova Transação</div>
+      <div class="options">
+        <span class="button new" onclick="Modal.open()"><img src="./assets/plus-symbol.svg" alt="Adicionar nova transação"> Nova Transação</span>
+        <a class="button export" onclick="Export.exportTableToCSV()"><img src="./assets/download.svg" alt="Download das transações"> Exportar</a>
+      </div>
       <table id="data-table">
         <thead>
           <tr>
-            <th onclick="Order.byDescription()">Descrição <img src="./assets/filter.svg" alt="Ordenar por descrição"></th>
-            <th onclick="Order.byAmount()">Valor <img src="./assets/filter.svg" alt="Ordenar por valor"></th>
-            <th onclick="Order.byDate()">Datas <img src="./assets/filter.svg" alt="Ordenar por datas"></th>
+            <th onclick="Order.byDescription()">Descrição<img src="./assets/filter.svg" alt="Ordenar por descrição"></th>
+            <th onclick="Order.byAmount()">Valor<img src="./assets/filter.svg" alt="Ordenar por valor"></th>
+            <th onclick="Order.byDate()">Datas<img src="./assets/filter.svg" alt="Ordenar por datas"></th>
             <th></th>
             <th></th>
           </tr>

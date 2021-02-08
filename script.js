@@ -374,6 +374,37 @@ const Form = {
   }
 }
 
+const Export = {
+  filename: 'my-finances.csv',
+  downloadTable(csv) {
+    const csvFile = new Blob([ csv ], { type: 'text/csv' });
+
+    const btnExport = document.querySelector('.export');
+    btnExport.download = this.filename;
+    btnExport.href = window.URL.createObjectURL(csvFile);
+  },
+  exportTableToCSV() {
+    const csv = [];
+    const rows = [...document.querySelectorAll('table tr')];
+  
+    rows.forEach((row) => {
+      const columns = [...row.querySelectorAll('th, td')].splice(0, 3);;
+      
+      const datas = columns.reduce((acc, column) => {
+        acc.push(column.textContent
+          .replace(/\./g, '')
+          .replace(/,/g, '.'));
+
+        return acc;
+      }, []).join(', ');
+
+      csv.push(datas);
+    })
+
+    this.downloadTable(csv.join('\n'));
+  },
+}
+
 const App = {
   init() {
     Transaction.all.forEach(DOM.addTransaction);
