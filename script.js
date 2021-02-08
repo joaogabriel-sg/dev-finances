@@ -1,20 +1,39 @@
 const DarkMode = {
+  mode: 0,
   buttonDarkMode: document.querySelector('.change-mode'),
   updateBodyClasses(classToAdd, classToRemove) {
     document.documentElement.classList.add(classToAdd);
     document.documentElement.classList.remove(classToRemove);
   },
   changeMode() {
-    if (document.documentElement.classList.contains('dark'))  {
-      this.updateBodyClasses('light', 'dark');
-      this.buttonDarkMode.src = './assets/moon.svg';
-    }
-    else {
+    localStorage.setItem('dev.finances:mode', JSON.stringify(this.mode));
+    
+    if (this.mode)  {
       this.updateBodyClasses('dark', 'light');
       this.buttonDarkMode.src = './assets/sun.svg';
+      this.mode = 0;
+    } else {
+      this.updateBodyClasses('light', 'dark');
+      this.buttonDarkMode.src = './assets/moon.svg';
+      this.mode = 1;
+    }
+  },
+  verifyModeOnStorage() {
+    const mode = JSON.parse(localStorage.getItem('dev.finances:mode')) || this.mode;
+    localStorage.setItem('dev.finances:mode', JSON.stringify(mode));
+
+    if (mode) {
+      this.updateBodyClasses('dark', 'light');
+      this.buttonDarkMode.src = './assets/sun.svg';
+      this.mode = 0;
+    } else {
+      this.updateBodyClasses('light', 'dark');
+      this.buttonDarkMode.src = './assets/moon.svg';
+      this.mode = 1;
     }
   },
   init() {
+    this.verifyModeOnStorage();
     this.changeMode = this.changeMode.bind(this);
     this.buttonDarkMode.addEventListener('click', this.changeMode);
   }
@@ -344,7 +363,6 @@ const Form = {
 
 const App = {
   init() {
-    DarkMode.init();
     Transaction.all.forEach(DOM.addTransaction);
     DOM.updateBalance();
     Storage.set(Transaction.all);
@@ -356,4 +374,5 @@ const App = {
 }
 
 App.init();
+DarkMode.init();
 Animations.table();
