@@ -72,6 +72,7 @@ const Order = {
     }
 
     DOM.clearTransactions();
+    Storage.set(itemsOrderedByDescription);
     itemsOrderedByDescription.forEach(DOM.addTransaction);
     Animations.tableDatas(0.2);
   },
@@ -87,6 +88,7 @@ const Order = {
     }
 
     DOM.clearTransactions();
+    Storage.set(itemsOrderedByAmount);
     itemsOrderedByAmount.forEach(DOM.addTransaction);
     Animations.tableDatas(0.2);
   },
@@ -114,6 +116,7 @@ const Order = {
     }
 
     DOM.clearTransactions();
+    Storage.set(itemsOrderedByDate);
     itemsOrderedByDate.forEach(DOM.addTransaction);
     Animations.tableDatas(0.2);
   },
@@ -148,16 +151,26 @@ const Transaction = {
     App.reload();
   },
   addByIndex(transaction, index) {
-    this.all[index] = transaction;
+    const items = Storage.get();
+    const itemsUpdated = items.map((item, i) => {
+      return (i == index) ? transaction : item;
+    });
+
+    this.all = itemsUpdated;
     App.reload();
   },
   remove(index) {
-    this.all.splice(index, 1);
+    const items = Storage.get();
+    const itemsFiltered = items.filter((item, i) => i != index);
+    
+    this.all = itemsFiltered;
     App.reload();
     Animations.tableDatas(0.1);
   },
   update(index) {
     const { amount, date, description } = Storage.getByIndex(index);
+    console.log(index)
+    console.log(Storage.getByIndex(index))
 
     const [day, month, year] = date.split('/');
     
