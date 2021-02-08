@@ -20,6 +20,86 @@ const DarkMode = {
   }
 }
 
+const Storage = {
+  getByIndex(index) {
+    const transactions = this.get();
+    return transactions[index];
+  },
+  get() {
+    return JSON.parse(localStorage.getItem('dev.finances:transactions')) || [];
+  },
+  set(transactions) {
+    localStorage.setItem('dev.finances:transactions', JSON.stringify(transactions));
+  },
+}
+
+const Order = {
+  isDescriptionNormalOrder: false,
+  isAmountNormalOrder: false,
+  isDateNormalOrder: false,
+  byDescription() {
+    const transactions = Storage.get();
+    console.log(transactions)
+    let itemsOrderedByDescription = transactions.sort((a, b) => {
+      return (a.description > b.description) 
+        ? 1 : (b.description > a.description) ? -1 : 0;
+    });
+
+    if (this.isDescriptionNormalOrder) {
+      itemsOrderedByDescription = itemsOrderedByDescription.reverse();
+      this.isDescriptionNormalOrder = false;
+    } else {
+      this.isDescriptionNormalOrder = true;
+    }
+
+    DOM.clearTransactions();
+    itemsOrderedByDescription.forEach(DOM.addTransaction);
+    Animations.tableDatas(0.2);
+  },
+  byAmount() {
+    const transactions = Storage.get();
+    let itemsOrderedByAmount = transactions.sort((a, b) => a.amount - b.amount);
+
+    if (this.isAmountNormalOrder) {
+      itemsOrderedByAmount = itemsOrderedByAmount.reverse()
+      this.isAmountNormalOrder = false;
+    } else {
+      this.isAmountNormalOrder = true;
+    }
+
+    DOM.clearTransactions();
+    itemsOrderedByAmount.forEach(DOM.addTransaction);
+    Animations.tableDatas(0.2);
+  },
+  byDate() {
+    const transactions = Storage.get();
+
+    let itemsOrderedByDate = transactions.sort((a, b) => {
+      const { date: aDateUnformatted } = a;
+      const { date: bDateUnformatted } = b;
+
+      const [aDay, aMonth, aYear] = aDateUnformatted.split('/');
+      const [bDay, bMonth, bYear] = bDateUnformatted.split('/');
+
+      const aDate = new Date(`${aYear}-${aMonth}-${aDay}`).getTime();
+      const bDate = new Date(`${bYear}-${bMonth}-${bDay}`).getTime();
+
+      return aDate - bDate;
+    });
+
+    if (this.isDateNormalOrder) {
+      itemsOrderedByDate = itemsOrderedByDate.reverse();
+      this.isDateNormalOrder = false;
+    } else {
+      this.isDateNormalOrder = true;
+    }
+
+    DOM.clearTransactions();
+    itemsOrderedByDate.forEach(DOM.addTransaction);
+    Animations.tableDatas(0.2);
+  },
+}
+
 const Modal = {
   elements: {
     form: document.querySelector('form'),
@@ -39,19 +119,6 @@ const Modal = {
   },
   update() {
     this.open();
-  },
-}
-
-const Storage = {
-  getByIndex(index) {
-    const transactions = this.get();
-    return transactions[index];
-  },
-  get() {
-    return JSON.parse(localStorage.getItem('dev.finances:transactions')) || [];
-  },
-  set(transactions) {
-    localStorage.setItem('dev.finances:transactions', JSON.stringify(transactions));
   },
 }
 
