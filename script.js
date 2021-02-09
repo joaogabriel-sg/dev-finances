@@ -167,6 +167,14 @@ const Transaction = {
     App.reload();
     Animations.tableDatas(0.1);
   },
+  removeAll() {
+    const areYouSureToRemoveAll = confirm('Você deseja deletar todos os dados?');
+    if (areYouSureToRemoveAll) {
+      this.all = [];
+      App.reload();
+      Animations.tableDatas(0.1);
+    }
+  },
   update(index) {
     const { amount, date, description } = Storage.getByIndex(index);
     console.log(index)

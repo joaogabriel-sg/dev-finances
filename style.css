@@ -214,6 +214,17 @@ button:hover {
   opacity: 1;
 }
 
+.button.remove {
+  margin-left: 1rem;
+  opacity: 0.7;
+  color: var(--red);
+  transition: opacity 0.3s;
+}
+
+.button.remove:hover {
+  opacity: 1;
+}
+
 /* HEADER ======================== */
 header {
   background: var(--dark-green);

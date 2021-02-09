@@ -45,7 +45,10 @@
     <section id="transaction">
       <h2 class="sr-only">Transações</h2>
       <div class="options">
-        <span class="button new" onclick="Modal.open()"><img src="./assets/plus-symbol.svg" alt="Adicionar nova transação"> Nova Transação</span>
+        <div class="options-left">
+          <span class="button new" onclick="Modal.open()"><img src="./assets/plus-symbol.svg" alt="Adicionar nova transação"> Nova Transação</span>
+          <span class="button remove" onclick="Transaction.removeAll()"><img src="./assets/minus-symbol.svg" alt="Remover todas as transações"> Remover Transações</span>
+        </div>
         <a class="button export" onclick="Export.exportTableToCSV()"><img src="./assets/download.svg" alt="Download das transações"> Exportar</a>
       </div>
       <table id="data-table">
