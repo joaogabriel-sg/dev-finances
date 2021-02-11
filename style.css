@@ -499,3 +499,14 @@ footer {
     gap: 2rem;
   }
 }
+
+@media (max-width: 799px) {
+  .options {
+    margin-bottom: 1rem;
+  }
+
+  .button.remove {
+    display: block;
+    margin-left: 0;
+  }
+}
